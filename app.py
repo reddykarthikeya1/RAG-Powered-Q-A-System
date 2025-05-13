@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import collections
 from modules.file_utils import load_corpus, parse_uploaded_file
 from modules.model_utils import is_gpu_available, get_embedder, get_qa
 from modules.rag_utils import build_faiss_index, answer_question, chunk_text
@@ -8,6 +9,23 @@ from modules.rag_utils import build_faiss_index, answer_question, chunk_text
 st.set_page_config(page_title="RAG Q&A System", layout="wide")
 st.title("RAG-Powered Q&A System (FAISS + GPU)")
 st.write("Upload a `.txt` or `.pdf` file (one passage per line or paragraph) to use as your knowledge base.")
+
+# --- Analytics state ---
+if "analytics" not in st.session_state:
+    st.session_state["analytics"] = {
+        "total_queries": 0,
+        "question_types": collections.Counter()
+    }
+
+# --- Display analytics ---
+st.markdown("### 📊 Usage Analytics")
+st.write(f"**Total queries served:** {st.session_state['analytics']['total_queries']}")
+if st.session_state["analytics"]["question_types"]:
+    st.write("**Top question types:**")
+    top_qtypes = st.session_state["analytics"]["question_types"].most_common(5)
+    st.table({"Type": [k for k, v in top_qtypes], "Count": [v for k, v in top_qtypes]})
+else:
+    st.write("No queries yet.")
 
 if is_gpu_available():
     st.success("GPU detected and in use! 🚀")
@@ -98,6 +116,10 @@ if question:
         "Answer": answer,
         "Context": " | ".join(used_context)
     })
+    # --- Update analytics ---
+    st.session_state["analytics"]["total_queries"] += 1
+    qtype = question.strip().split()[0].capitalize() if question.strip() else "Other"
+    st.session_state["analytics"]["question_types"][qtype] += 1
 
 if st.session_state["history"]:
     st.subheader("Q&A History")

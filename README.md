@@ -18,9 +18,10 @@ A modular, production-ready Retrieval-Augmented Generation (RAG) Question Answer
 * **Flexible QA Models**: Choose from multiple Hugging Face QA models for best speed/accuracy tradeoff.
 * **Document Upload**: Supports `.txt` and `.pdf` uploads; chunking for large documents.
 * **User-Friendly UI**: All settings explained with tooltips; easy for non-experts to use.
-* **Downloadable Q\&A History**: Export your session as a CSV.
+* **Downloadable Q&A History**: Export your session as a CSV.
 * **GPU Support**: Automatically uses GPU if available for blazing-fast inference.
 * **Modular Codebase**: Clean, extensible Python modules for easy maintenance and upgrades.
+* **Usage Analytics**: Displays total queries served and top question types for monitoring and observability.
 
 ## 🖥️ How It Works
 
@@ -29,18 +30,24 @@ A modular, production-ready Retrieval-Augmented Generation (RAG) Question Answer
 3. **Semantic Embedding**: Each passage is embedded using your selected Sentence Transformer model.
 4. **Vector Indexing**: FAISS builds a fast similarity index over all embeddings.
 5. **Ask Questions**: Enter your question; the app retrieves the most relevant passages and uses a QA model to extract the answer.
-6. **Review & Download**: See the context used for each answer and download your Q\&A history.
+6. **Review & Download**: See the context used for each answer and download your Q&A history.
+7. **Monitor Usage**: View analytics for total queries and top question types.
 
 ## 🛠️ Project Structure
 
 ```text
-├── app.py            # Streamlit frontend
-├── embeddings.py     # Embedding & vector indexing utilities
-├── retriever.py      # FAISS-based retriever
-├── qa_model.py       # QA inference pipeline
-├── utils.py          # Helper functions (PDF/text parsing, chunking, etc.)
-├── requirements.txt  # Python dependencies
-└── sample_corpus.txt # Default demo text
+rag_qa_streamlit/
+│
+├── app.py                  # Streamlit app entry point
+├── requirements.txt        # All dependencies
+├── data/
+│   └── sample_corpus.txt   # Default knowledge base
+├── modules/
+│   ├── __init__.py
+│   ├── file_utils.py       # File loading, PDF parsing, chunking
+│   ├── model_utils.py      # Model loading, GPU detection
+│   └── rag_utils.py        # FAISS, retrieval, QA logic
+└── README.md
 ```
 
 ## ⚡ Quickstart
@@ -48,8 +55,8 @@ A modular, production-ready Retrieval-Augmented Generation (RAG) Question Answer
 1. **Clone the repo**:
 
    ```bash
-   git clone https://github.com/<your-username>/rag-qa-system.git
-   cd rag-qa-system
+   git clone https://github.com/<your-username>/rag_qa_streamlit.git
+   cd rag_qa_streamlit
    ```
 
 2. **Install dependencies**:
@@ -68,13 +75,13 @@ A modular, production-ready Retrieval-Augmented Generation (RAG) Question Answer
 
 ## 🧩 Customization
 
-* **Add your own corpus**: Place a `.txt` or `.pdf` in the app, or edit `sample_corpus.txt`.
+* **Add your own corpus**: Place a `.txt` or `.pdf` in the app, or edit `data/sample_corpus.txt`.
 * **Add more models**: Edit the dropdowns in `app.py` and update `requirements.txt` as needed.
 * **Tune chunking**: Adjust chunk size and overlap for best retrieval results.
 
 ## 📚 Example Use Cases
 
-* Enterprise Knowledge Base Q\&A
+* Enterprise Knowledge Base Q&A
 * Research Paper Summarization
 * Customer Support Automation
 * Educational Chatbots
@@ -96,4 +103,4 @@ This project is open source and available under the [MIT License](LICENSE).
 * [PyPDF2](https://pypi.org/project/PyPDF2/)
 * [Pandas](https://pandas.pydata.org/)
 
-Enjoy your RAG-powered Q\&A system! If you use this project, please ⭐️ the repo and share your feedback.
+Enjoy your RAG-powered Q&A system! If you use this project, please ⭐️ the repo and share your feedback.
