@@ -1,7 +1,7 @@
 streamlit
 sentence-transformers
 transformers
-faiss-cpu
+faiss-cpu>=1.6.5
 torch
-PyPDF2
+pypdf
 pandas
